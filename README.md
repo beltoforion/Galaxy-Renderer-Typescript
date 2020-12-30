@@ -9,7 +9,7 @@ For more Details please read the Articles.
 * https://beltoforion.de/en/spiral_galaxy_renderer [english]
 * https://beltoforion.de/de/rendern_von_spiralgalaxien [german]
 
-##Prerequisites:
+## Prerequisites:
 
 In order to build this project you need typescript and npm. I did not add the npm dependencies to this archive. The repository was created using Visual Studio Code.
 
