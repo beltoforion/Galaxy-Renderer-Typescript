@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8"/>
-  <title>Procedural generation of Spiral Galaxies</title>
+  <title>Procedural Generation of Spiral Galaxies</title>
   <style>
 	fieldset {
 		border: 1; 
@@ -21,8 +21,9 @@
 	h1 {
 		font-family: sans-serif;  
 		color: #EEEEEE;
-		font-weight: 100;
 		font-style: normal;
+		font-size: 20pt;
+		font-weight: 100; 
 	}
 
 	body {
@@ -51,12 +52,32 @@
 		min-width: 380px;
 	}
 	
-	#main {
-		text-align: center;
-	}
 
 	a {
 		color: #BBBBCC;
+	}
+
+	div.slider {
+		margin-top: 10px;
+	}
+	input[type=range] {
+		width:250px;
+	}
+
+	.container {
+  		height: 100vh;
+		margin:0px;
+  		position: relative;
+/*  		border: 3px solid green; */
+	}
+
+	.center {
+		margin: 0;
+  		position: absolute;
+  		top: 50%;
+  		left: 50%;
+  		-ms-transform: translate(-50%, -50%);
+  		transform: translate(-50%, -50%);
 	}
   </style>
 </head>
@@ -67,9 +88,8 @@
 		</svg>
 	</a>
 		
-	<div id="main">
-		<div style="display: inline-block; ">
-			<h1>Procedural generation of Spiral Galaxies</h1>
+	<div class="container">
+		<div class="center" >
 			<div class="row" style="text-align: left;" >
 				<div class="column-30 controls">
 					<form>  
@@ -100,6 +120,12 @@
 										<label for="cbShowVelocity">velocity curve</label><br/>
 									</div>
 								</div> 
+
+								<div class="slider">
+									<label for="slTimeStep">Time step length in years</label><br/>
+									<input type="range" min="0" max="1000000" value="50" class="slider" id="slTimeStep">
+									<span id="labelTimeStep"></span>
+								</div>
 						</fieldset>
 
 						<fieldset>  
@@ -128,54 +154,54 @@
 								</div>
 							</div> 
 
-							<div>
+							<div class="slider">
 								<label for="slFov">Field of view</label><br/>
-								<input style="width:250px;" type="range" min="5000" max="50000" value="50" class="slider" id="slFov">
+								<input type="range" min="5000" max="50000" value="50" class="slider" id="slFov">
 								<span id="labelFov"></span>
 							</div>
 
-							<div>
+							<div class="slider">
 								<label for="slDustSize">Dust render size</label><br/>
-								<input style="width:250px;" type="range" min="100" max="300" value="187" class="slider" id="slDustSize">
+								<input type="range" min="100" max="300" value="187" class="slider" id="slDustSize">
 								<span id="labelDustRenderSize"></span>
 							</div>
 						</fieldset>
 
 						<fieldset>  
 							<h3>Density Waves</h3>
-							<div>
+							<div class="slider">
 								<label for="slCoreRad">Galaxy core radius</label><br/>
-								<input style="width:250px;" type="range" min="0.05" max="0.95" step="0.01" class="slider" id="slCoreRad">
+								<input type="range" min="0.05" max="0.95" step="0.01" class="slider" id="slCoreRad">
 								<span id="labelCoreRad"></span>
 							</div>
 
-							<div>
+							<div class="slider">
 								<label for="slRad">Galaxy radius</label><br/>
-								<input style="width:250px;" type="range" min="1000" max="20000" class="slider" id="slRad">
+								<input type="range" min="1000" max="20000" class="slider" id="slRad">
 								<span id="labelRad"></span>
 							</div>
 
-							<div>
+							<div class="slider">
 								<label for="slAngOffset">Angular Offset</label><br/>
-								<input style="width:250px;" type="range" min="0.0001" max="0.0008" step="0.00001" class="slider" id="slAngOffset">
+								<input type="range" min="0.0001" max="0.0008" step="0.00001" class="slider" id="slAngOffset">
 								<span id="labelAngularOffset"></span>
 							</div>
 
-							<div>
+							<div class="slider">
 								<label for="slInnerEx">Inner Excentricity</label><br/>
-								<input style="width:250px;" type="range" min="0" max="2" step="0.01" class="slider" id="slInnerEx">
+								<input type="range" min="0" max="2" step="0.01" class="slider" id="slInnerEx">
 								<span id="labelInnerEx"></span>
 							</div>
 
-							<div>
+							<div class="slider">
 								<label for="slOutterEx">Outter Excentricity</label><br/>
-								<input style="width:250px;" type="range" min="0" max="2" step="0.01" class="slider" id="slOutterEx">
+								<input type="range" min="0" max="2" step="0.01" class="slider" id="slOutterEx">
 								<span id="labelOutterEx"></span>
 							</div>
 
-							<div>
+							<div class="slider">
 								<label for="slPertN">Spiral Arms</label><br/>
-								<input style="width:250px;" type="range" min="0" max="4" step="1" class="slider" id="slPertN">
+								<input type="range" min="0" max="4" step="1" class="slider" id="slPertN">
 								<span id="labelPertN"></span>
 							</div>
 						</fieldset>
@@ -183,7 +209,9 @@
 				</div> <!-- class=column-30 -->
 		
 				<div class="column-70">
-					<canvas id="cvGalaxy" width="900" height="800"></canvas>
+					<h1 style="text-align: center; margin:px;">Procedural generation of spiral Galaxies</h1>
+
+					<canvas id="cvGalaxy" width="750" height="750"></canvas>
 					<p style="text-align: center;">
 						<a href="https://beltoforion.de/de/contact/">Impressum</a> | beltoforion.de
 					</p>
@@ -222,6 +250,7 @@
 			document.getElementById("cbHasDarkMatter").checked = renderer.hasDarkMatter;
 
 			// Galaxy properties
+			uiController.initilializeSlider('slTimeStep', 'labelTimeStep', 'timeStep')
 			uiController.initilializeSlider('slFov', 'labelFov', 'fov')
 			uiController.initilializeSlider('slDustSize', 'labelDustRenderSize', 'dustRenderSize')
 

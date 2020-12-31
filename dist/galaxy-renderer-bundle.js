@@ -3266,7 +3266,7 @@ class GalaxyRenderer {
         this._renderUpdateHint = RenderUpdateHint.STARS | RenderUpdateHint.DENSITY_WAVES | RenderUpdateHint.AXIS | RenderUpdateHint.CREATE_VELOCITY_CURVE;
         this._galaxy = new _Galaxy__WEBPACK_IMPORTED_MODULE_4__.Galaxy();
         this.preset = [];
-        this.TimeStepSize = 100000.0;
+        this._timeStepSize = 100000.0;
         this.dustRenderSizeBase = 187;
         this.canvas = canvas;
         this.gl = this.canvas.getContext("webgl2");
@@ -3290,6 +3290,12 @@ class GalaxyRenderer {
     }
     get galaxy() {
         return this._galaxy;
+    }
+    get timeStep() {
+        return this._timeStepSize;
+    }
+    set timeStep(ts) {
+        this._timeStepSize = ts;
     }
     onKeydown(event) {
         /*
@@ -3575,7 +3581,7 @@ class GalaxyRenderer {
         this.renderUpdateHint &= ~RenderUpdateHint.CREATE_VELOCITY_CURVE;
     }
     update() {
-        this.time += this.TimeStepSize;
+        this.time += this.timeStep;
         if ((this.renderUpdateHint & RenderUpdateHint.AXIS) != 0)
             this.updateAxis();
         if ((this.renderUpdateHint & RenderUpdateHint.DENSITY_WAVES) != 0)

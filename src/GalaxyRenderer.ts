@@ -53,7 +53,7 @@ export class GalaxyRenderer {
     private _galaxy : Galaxy = new Galaxy()
     private preset : GalaxyParam[] = []
 
-    private readonly TimeStepSize : number = 100000.0;
+    private _timeStepSize : number = 100000.0;
 
     public set renderUpdateHint(hint: RenderUpdateHint)  {
         this._renderUpdateHint = hint
@@ -65,6 +65,14 @@ export class GalaxyRenderer {
 
     public get galaxy() : Galaxy {
         return this._galaxy
+    }
+
+    public get timeStep() : number {
+        return this._timeStepSize
+    }
+
+    public set timeStep(ts:number) {
+        this._timeStepSize = ts
     }
 
     public constructor(canvas : HTMLCanvasElement) {
@@ -498,7 +506,7 @@ export class GalaxyRenderer {
     }   
 
     private update() : void {
-        this.time += this.TimeStepSize;
+        this.time += this.timeStep;
 
         if ((this.renderUpdateHint & RenderUpdateHint.AXIS) != 0)
             this.updateAxis();
