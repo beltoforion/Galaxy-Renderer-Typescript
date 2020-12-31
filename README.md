@@ -1,11 +1,7 @@
 # Galaxy-Renderer-Typescript
  Procedural generation of a 2D spiral galaxy with the density wave theory
  
- Online demo of this project:
- 
- https://beltoforion.de/en/spiral_galaxy_renderer/spiral-galaxy-renderer.html
- 
- A Program for modelling a two dimensional galaxy based on the density wave theory. This archive contains the source code for an 
+A Program for modelling a two dimensional galaxy based on the density wave theory. This archive contains the source code for an 
 article at beltoforion.de about Simulating a Galaxy with the density wave theory.
 
 For more Details please read the Articles.
