@@ -5,7 +5,7 @@
             "name": "Launch Chrome against localhost, with sourcemaps",
             "type": "chrome",
             "request": "launch",
-            "url": "file://${workspaceRoot}/dist/spiral-galaxy.html",
+            "url": "file://${workspaceRoot}/dist/spiral-galaxy-renderer.html",
             "sourceMaps": true,
             "webRoot": "${workspaceRoot}"
         },
