@@ -203,6 +203,8 @@
 		update(renderer);
 
 		function update(renderer) {
+			uiController.updateGalaxyParam()
+			
 			// Physics option
 			document.getElementById("cbHasDarkMatter").checked = renderer.hasDarkMatter
 			document.getElementById("cbShowVelocity").checked = renderer.showVelocity
@@ -234,7 +236,7 @@
 		
 		function onSelectPreset() {
 			renderer.selectPreset(parseInt(document.getElementById("cbPreset").value))
-			update(renderer);
+			update(renderer)
 		}
 
 		function onShowDensityWaves() {

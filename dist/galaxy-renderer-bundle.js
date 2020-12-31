@@ -4071,12 +4071,7 @@ class UiController {
         this._isEditMode = false;
         this.renderState = [];
         this.renderer = renderer;
-        this.rad = this.galaxy.rad;
-        this.coreRad = this.galaxy.coreRad / this.galaxy.rad;
-        this.exInner = this.galaxy.exInner;
-        this.exOuter = this.galaxy.exOuter;
-        this.angleOffset = this.galaxy.angleOffset;
-        this.pertN = this.galaxy.pertN;
+        this.updateGalaxyParam();
     }
     set isEditMode(mode) {
         if (this._isEditMode == mode)
@@ -4088,6 +4083,14 @@ class UiController {
     }
     get galaxy() {
         return this.renderer.galaxy;
+    }
+    updateGalaxyParam() {
+        this.rad = this.galaxy.rad;
+        this.coreRad = this.galaxy.coreRad / this.galaxy.rad;
+        this.exInner = this.galaxy.exInner;
+        this.exOuter = this.galaxy.exOuter;
+        this.angleOffset = this.galaxy.angleOffset;
+        this.pertN = this.galaxy.pertN;
     }
     leaveEditMode() {
         if (!this._isEditMode)

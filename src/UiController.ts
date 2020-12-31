@@ -33,6 +33,10 @@ export class UiController {
     constructor(renderer : GalaxyRenderer) {
         this.renderer = renderer
 
+        this.updateGalaxyParam()
+    }
+
+    public updateGalaxyParam() : void {
         this.rad = this.galaxy.rad
         this.coreRad = this.galaxy.coreRad / this.galaxy.rad
         this.exInner = this.galaxy.exInner
