@@ -43,11 +43,12 @@
 	}
 
 	.column-70 {
-		flex: 70%;
+		flex: 67%;
 	}
 	
 	.column-30 {
-		flex: 30%;
+		flex: 33%;
+		min-width: 380px;
 	}
 	
 	#main {
@@ -67,13 +68,12 @@
 	</a>
 		
 	<div id="main">
-		<div style="display: inline-block;">
+		<div style="display: inline-block; ">
 			<h1>Procedural generation of Spiral Galaxies</h1>
 			<div class="row" style="text-align: left;" >
 				<div class="column-30 controls">
 					<form>  
-
-						<fieldset> 
+						<fieldset > 
 							<h3>Galaxy presets</h3>
 							<select id="cbPreset" name="viewpoint" onChange="onSelectPreset()">
 								<option value="0" selected>Sample 1</option>
@@ -204,7 +204,7 @@
 
 		function update(renderer) {
 			uiController.updateGalaxyParam()
-			
+
 			// Physics option
 			document.getElementById("cbHasDarkMatter").checked = renderer.hasDarkMatter
 			document.getElementById("cbShowVelocity").checked = renderer.showVelocity
