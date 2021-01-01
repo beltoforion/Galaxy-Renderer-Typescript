@@ -14,7 +14,9 @@ A C++ implementation of this code is available here:
 An online demo of the typescript version can be viewed here:
 
 * https://beltoforion.de/en/spiral_galaxy_renderer/spiral-galaxy-renderer.html
-
+ https://beltoforion.de/en/spiral_galaxy_renderer/spiral-galaxy-renderer.html/images/galaxy-applet.jpg
+ 
+ [![applet image](https://beltoforion.de/github_images/galaxy-renderer-typescript.jpg)](https://beltoforion.de/en/spiral_galaxy_renderer/spiral-galaxy-renderer.html)
 ## Prerequisites:
 
 In order to build this project you need typescript and npm. I did not add the npm dependencies to this archive. The repository was created using Visual Studio Code.
