@@ -25,7 +25,6 @@ export class Galaxy {
 	private _hasDarkMatter : boolean = true;
 	private _baseTemp : number = 0;
 
-
     constructor(
             rad : number = 15000,
             radCore : number = 6000,
@@ -103,7 +102,7 @@ export class Galaxy {
     
             this._stars.push(star);
         }
-    
+
         //
         // 2.) Initialise Dust:
         //
@@ -154,10 +153,7 @@ export class Galaxy {
     
             let theta : number = 360.0 * Helper.rnum();
             let mag : number= 0.1 + 0.05 * Helper.rnum();
-            let a : number= rad;
-            let b : number= rad * this.getExcentricity(rad);
             let num : number= 100 * Helper.rnum();
-            let temp : number= this._baseTemp + rad / 4.5 - 2000;
 
             for (let i = 0; i < num; ++i)
             {
@@ -214,23 +210,26 @@ export class Galaxy {
         }
     }
         
-    public reset(param: GalaxyParam) : void 
+    public reset(param: GalaxyParam | null = null, recomputeStars : boolean) : void 
     {
-        this._baseTemp = param.baseTemp;
-        this._elEx1 = param.ex1;
-        this._elEx2 = param.ex2;
-        this._elEx2 = param.ex2;
-        this._angleOffset = param.deltaAng;
-        this._radCore = param.radCore;
-        this._radGalaxy = param.rad;
-        this._radFarField = param.rad * 2;  // there is no science behind this threshold it just looks nice
-        this._numStars = param.numStars;
-        this._dustRenderSize = param.dustRenderSize;
-        this._hasDarkMatter = param.hasDarkMatter;
-        this._pertN = param.pertN;
-        this._pertAmp = param.pertAmp;
-    
-        this.initStarsAndDust();
+        if (param != null) {
+            this._baseTemp = param.baseTemp;
+            this._elEx1 = param.ex1;
+            this._elEx2 = param.ex2;
+            this._elEx2 = param.ex2;
+            this._angleOffset = param.deltaAng;
+            this._radCore = param.radCore;
+            this._radGalaxy = param.rad;
+            this._radFarField = param.rad * 2;  // there is no science behind this threshold it just looks nice
+            this._numStars = param.numStars;
+            this._dustRenderSize = param.dustRenderSize;
+            this._hasDarkMatter = param.hasDarkMatter;
+            this._pertN = param.pertN;
+            this._pertAmp = param.pertAmp;
+        }
+
+        if (recomputeStars)
+            this.initStarsAndDust();
     }
 
     get stars() : Star[]
@@ -352,8 +351,16 @@ export class Galaxy {
         return this._pertAmp
     }
 
+    public set pertAmp(pertAmp:number) {
+	    this._pertAmp = pertAmp
+    }
+
     public get baseTemp() : number {
         return this._baseTemp
+    }
+
+    public set baseTemp(baseTemp:number) {
+	    this._baseTemp = baseTemp
     }
 
     public get hasDarkMatter() : boolean {

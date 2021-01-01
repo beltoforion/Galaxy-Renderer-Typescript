@@ -60,8 +60,13 @@
 	div.slider {
 		margin-top: 10px;
 	}
+
+	div.checkbox {
+		margin-top: 10px;
+	}
+
 	input[type=range] {
-		width:250px;
+		width:240px;
 	}
 
 	.container {
@@ -78,6 +83,14 @@
   		left: 50%;
   		-ms-transform: translate(-50%, -50%);
   		transform: translate(-50%, -50%);
+	}
+
+	progress {
+		width: 350px;
+  		height: 80px;
+		top: 335px; 
+		left: 200px;
+		position: absolute;
 	}
   </style>
 </head>
@@ -110,49 +123,59 @@
 
 						<fieldset>  
 							<h3>Physics</h3>
-								<div class="row">
-									<div class="column">
+									<div class="checkbox">
 										<input type="checkbox" value="true" id="cbHasDarkMatter" onChange="onHasDarkMatter()"/> 
 										<label for="cbHasDarkMatter">dark matter</label><br/>
 									</div>
-									<div class="column">
+									<div class="checkbox">
 										<input type="checkbox" value="true" id="cbShowVelocity" onChange="onShowVelocity()"/> 
 										<label for="cbShowVelocity">velocity curve</label><br/>
 									</div>
-								</div> 
 
 								<div class="slider">
 									<label for="slTimeStep">Time step length in years</label><br/>
 									<input type="range" min="0" max="1000000" value="50" class="slider" id="slTimeStep">
 									<span id="labelTimeStep"></span>
 								</div>
+
+								<div class="slider">
+									<label for="slBaseTemp">Base Temperature  in K</label><br/>
+									<input type="range" min="1000" max="10000" step="10" class="slider" id="slBaseTemp">
+									<span id="labelBaseTemp"></span>
+								</div>
 						</fieldset>
 
 						<fieldset>  
 							<h3>Display</h3>
-							<div class="row">
-								<div class="column">
-									<input type="checkbox" value="true" id="cbShowDensityWaves" onChange="onShowDensityWaves()"/> 
-									<label for="cbShowDensityWaves">density waves</label><br/>
+							<div class="checkbox">
+								<input type="checkbox" value="true" id="cbShowDensityWaves" onChange="onShowDensityWaves()"/> 
+								<label for="cbShowDensityWaves">density waves</label><br/>
+							</div>
 
-									<input type="checkbox" value="true" id="cbShowAxis" onChange="onShowAxis()"/> 
-									<label for="cbShowAxis">axis</label><br/>
+							<div class="checkbox">
+								<input type="checkbox" value="true" id="cbShowAxis" onChange="onShowAxis()"/> 
+								<label for="cbShowAxis">axis</label><br/>
+							</div>
 
-									<input type="checkbox" value="true" id="cbShowStars" onChange="onShowStars()"/> 
-									<label for="cbShowStars">stars</label><br/>
-								</div>
-				
-								<div class="column">
-									<input type="checkbox" value="true" id="cbShowDust" onChange="onShowDust()"/> 
-									<label for="cbShowDust">dust</label><br/>
+							<div class="checkbox">
+								<input type="checkbox" value="true" id="cbShowStars" onChange="onShowStars()"/> 
+								<label for="cbShowStars">stars</label><br/>
+							</div>
+			
+							<div class="checkbox">
+								<input type="checkbox" value="true" id="cbShowDust" onChange="onShowDust()"/> 
+								<label for="cbShowDust">dust</label><br/>
+							</div>
 
-									<input type="checkbox" value="true" id="cbShowDustFilaments" onChange="onShowDustFilaments()"/> 
-									<label for="cbShowDustFilaments">dust filaments</label><br/>
+							<div class="checkbox">
+								<input type="checkbox" value="true" id="cbShowDustFilaments" onChange="onShowDustFilaments()"/> 
+								<label for="cbShowDustFilaments">dust filaments</label><br/>
+							</div>
 
-									<input type="checkbox" value="true" id="cbShowH2" onChange="onShowH2()"/> 
-									<label for="cbShowH2">H2 regions</label><br/>
-								</div>
-							</div> 
+							<div class="checkbox">
+								<input type="checkbox" value="true" id="cbShowH2" onChange="onShowH2()"/> 
+								<label for="cbShowH2">H2 regions</label><br/>
+							</div>
 
 							<div class="slider">
 								<label for="slFov">Field of view</label><br/>
@@ -167,22 +190,40 @@
 							</div>
 						</fieldset>
 
+					</form>
+				</div> <!-- class=column-30 -->
+
+				<div class="column-70">
+					<h1 style="text-align: center; margin:px;">Procedural generation of spiral Galaxies</h1>
+
+					<div style="position:relative;">
+						<canvas id="cvGalaxy" width="750" height="750"></canvas>
+<!--						<progress id="idProgress">Please Wait</progress> -->
+					</div>
+
+					<p style="text-align: center;">
+						<a href="https://beltoforion.de/de/contact/">Impressum</a> | beltoforion.de
+					</p>
+				</div> <!-- class=column-70 -->
+
+				<div class="column-30 controls">
+					<form>  
 						<fieldset>  
 							<h3>Density Waves</h3>
 							<div class="slider">
-								<label for="slCoreRad">Galaxy core radius</label><br/>
+								<label for="slCoreRad">Galaxy core radius in ly</label><br/>
 								<input type="range" min="0.05" max="0.95" step="0.01" class="slider" id="slCoreRad">
 								<span id="labelCoreRad"></span>
 							</div>
 
 							<div class="slider">
-								<label for="slRad">Galaxy radius</label><br/>
+								<label for="slRad">Galaxy radius in ly</label><br/>
 								<input type="range" min="1000" max="20000" class="slider" id="slRad">
 								<span id="labelRad"></span>
 							</div>
 
 							<div class="slider">
-								<label for="slAngOffset">Angular Offset</label><br/>
+								<label for="slAngOffset">Angular Offset in degree</label><br/>
 								<input type="range" min="0.0001" max="0.0008" step="0.00001" class="slider" id="slAngOffset">
 								<span id="labelAngularOffset"></span>
 							</div>
@@ -200,22 +241,21 @@
 							</div>
 
 							<div class="slider">
-								<label for="slPertN">Spiral Arms</label><br/>
+								<label for="slPertN">Number Ellipse Disturbances</label><br/>
 								<input type="range" min="0" max="4" step="1" class="slider" id="slPertN">
 								<span id="labelPertN"></span>
 							</div>
+
+							<div class="slider">
+								<label for="slPertAmp">Ellipse Disturbance Damping factor</label><br/>
+								<input type="range" min="2" max="100" step="1" class="slider" id="slPertAmp">
+								<span id="labelPertAmp"></span>
+							</div>
+
 						</fieldset>
 					</form>
 				</div> <!-- class=column-30 -->
-		
-				<div class="column-70">
-					<h1 style="text-align: center; margin:px;">Procedural generation of spiral Galaxies</h1>
 
-					<canvas id="cvGalaxy" width="750" height="750"></canvas>
-					<p style="text-align: center;">
-						<a href="https://beltoforion.de/de/contact/">Impressum</a> | beltoforion.de
-					</p>
-				</div> <!-- class=column-70 -->
 			</div> <!-- class=row -->
 
 		</div>
@@ -231,7 +271,7 @@
 		update(renderer);
 
 		function update(renderer) {
-			uiController.updateGalaxyParam()
+			uiController.updateFromGalaxy()
 
 			// Physics option
 			document.getElementById("cbHasDarkMatter").checked = renderer.hasDarkMatter
@@ -261,6 +301,10 @@
 			uiController.initilializeEditModeSlider('slInnerEx', 'labelInnerEx', 'exInner')
 			uiController.initilializeEditModeSlider('slOutterEx', 'labelOutterEx', 'exOuter')
 			uiController.initilializeEditModeSlider('slPertN', 'labelPertN', 'pertN')
+			uiController.initilializeEditModeSlider('slPertAmp', 'labelPertAmp', 'pertAmp')
+
+			uiController.initilializeEditModeSlider('slBaseTemp', 'labelBaseTemp', 'baseTemp')
+
 		}
 		
 		function onSelectPreset() {

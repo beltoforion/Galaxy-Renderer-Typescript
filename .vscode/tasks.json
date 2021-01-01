@@ -5,12 +5,20 @@
     "echoCommand": true,
     "tasks": [
         {
-            "label": "Build Galaxy Renderer",
+            "label": "Build Galaxy Renderer (Develop)",
             "type": "npm",
             "script": "build",
             "group": "build",
             "problemMatcher": [],
             "detail": "webpack --mode development"
+        },
+        {
+            "label": "Build Galaxy Renderer (Production)",
+            "type": "npm",
+            "script": "prod",
+            "group": "build",
+            "problemMatcher": [],
+            "detail": "webpack --mode production"
         }
     ]
 }

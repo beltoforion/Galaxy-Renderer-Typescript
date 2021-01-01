@@ -2,7 +2,8 @@ import { GalaxyRenderer, RenderUpdateHint } from "./GalaxyRenderer";
 import { Galaxy } from "./Galaxy";
 
 
-export class UiController {
+
+export class UiController implements IProgressHandler{
     private renderer : GalaxyRenderer
 
     private rad : number = 0
@@ -11,10 +12,28 @@ export class UiController {
     private exOuter : number= 0
     private angleOffset : number= 0
     private pertN : number = 0
+    private pertAmp : number = 0
+    private baseTemp : number = 0
 
     private _isEditMode : boolean = false
 
     private renderState : boolean[] = []
+
+    private progress : HTMLProgressElement | null;
+
+    constructor(renderer : GalaxyRenderer) {
+        this.renderer = renderer
+        this.renderer.setProgressListener(this)
+
+        document.addEventListener('keydown', (event) => this.onKeydown(event));
+
+// progress display does not work
+//        this.progress = document.getElementById("idProgress") as HTMLProgressElement;
+        this.progress = null
+        this.showProgress(false)
+
+        this.updateFromGalaxy()
+    }
 
     private set isEditMode(mode: boolean)  {
         if (this._isEditMode == mode)
@@ -30,19 +49,56 @@ export class UiController {
         return this.renderer.galaxy
     }
 
-    constructor(renderer : GalaxyRenderer) {
-        this.renderer = renderer
+    public showProgress(show : boolean) : void {
+        if (this.progress==null)
+            return;
 
-        this.updateGalaxyParam()
+        if (show) {
+            console.log("showing progress")
+            this.progress.style.display = "block"
+        } else {
+            console.log("hiding progress")
+            this.progress.style.display = "none"
+        }
     }
 
-    public updateGalaxyParam() : void {
+    private onKeydown(event : KeyboardEvent) {
+        /*        
+                const keyName = event.key;
+                console.log("Key " + keyName + " pressed")
+        
+                switch(keyName)
+                {
+                    case 'x':
+        
+                        break;    
+                }
+        */        
+    }
+
+    // Update Ui Controller from galaxy
+    public updateFromGalaxy() : void {
         this.rad = this.galaxy.rad
         this.coreRad = this.galaxy.coreRad / this.galaxy.rad
         this.exInner = this.galaxy.exInner
         this.exOuter = this.galaxy.exOuter
         this.angleOffset = this.galaxy.angleOffset
         this.pertN = this.galaxy.pertN
+        this.pertAmp = this.galaxy.pertAmp
+        this.baseTemp = this.galaxy.baseTemp
+    }
+
+    // Update galaxy from Ui Controller
+    private updateToGalaxy() : void  {
+         this.renderer.updateDensityWaveParam(
+             this.coreRad * this.rad,
+             this.rad,
+             this.angleOffset,
+             this.exInner,
+             this.exOuter,
+             this.pertN,
+             this.pertAmp,
+             this.baseTemp);
     }
 
     private leaveEditMode() : void {
@@ -64,8 +120,9 @@ export class UiController {
         }
         finally
         {
+            this.showProgress(true)
             this._isEditMode = false
-            this.renderer.renderUpdateHint = RenderUpdateHint.STARS
+            this.renderer.renderUpdateHint |= RenderUpdateHint.STARS
         }
     }
 
@@ -98,7 +155,7 @@ export class UiController {
         }
     }
 
-    public initilializeSlider(id : string, idLabel : string, prop : string) {
+    public initilializeSlider(id : string, idLabel : string, prop : string) : void {
         let slider : HTMLInputElement = document.getElementById(id) as HTMLInputElement
         if (slider == null)
             throw new Error("UiController.initilializeSlider(): Ther is no input element with that id!")
@@ -130,22 +187,11 @@ export class UiController {
             self.isEditMode = true;
 
             label.innerHTML = slider.value
-            self.update()
+            self.updateToGalaxy()
         } 
 
         slider.onmouseup = function() {
             self.isEditMode = false;
         }
     }
-
-    private update() : void  {
-        this.renderer.updateDensityWaveParam(
-            this.coreRad * this.rad ,
-            this.rad,
-            this.angleOffset,
-            this.exInner,
-            this.exOuter,
-            this.pertN);
-    }
-
 }

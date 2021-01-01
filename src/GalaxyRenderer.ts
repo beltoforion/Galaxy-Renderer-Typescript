@@ -87,33 +87,11 @@ export class GalaxyRenderer {
 	    this.vertVelocityCurve = new VertexBufferLines(this.gl, 1, this.gl.DYNAMIC_DRAW);
         this.vertStars = new VertexBufferStars(this.gl)
 
-        document.addEventListener('keydown', (event) => this.onKeydown(event));
-
         this.initGL(this.gl);
         this.initSimulation();
 
         // Start the main loop
         window.requestAnimationFrame((timeStamp) => this.mainLoop(timeStamp));
-    }
-
-    private onKeydown(event : KeyboardEvent) {
-/*        
-        const keyName = event.key;
-        console.log("Key " + keyName + " pressed")
-
-        switch(keyName)
-        {
-            case '+':
-                this.galaxy.exInner = Math.max(this.galaxy.exInner - 0.05, 0.0)
-                this.renderUpdateHint |= RenderUpdateHint.DENSITY_WAVES
-                break;
-
-            case '-':
-                this.galaxy.exInner = this.galaxy.exInner + 0.05
-                this.renderUpdateHint |= RenderUpdateHint.DENSITY_WAVES
-                break;    
-        }
-*/        
     }
 
     private dustRenderSizeBase : number = 187;
@@ -219,7 +197,7 @@ export class GalaxyRenderer {
     }
 
     public selectPreset(idx : number) : void {
-        this.galaxy.reset(this.preset[idx]);
+        this.galaxy.reset(this.preset[idx], false);
         this.fov = this.galaxy.rad * 3;
         this.renderUpdateHint |= RenderUpdateHint.DENSITY_WAVES | RenderUpdateHint.STARS | RenderUpdateHint.CREATE_VELOCITY_CURVE;
     }
@@ -230,13 +208,17 @@ export class GalaxyRenderer {
         angularOffset : number, 
         innerEx : number, 
         outterEx : number,
-        pertN : number) : void {
+        pertN : number,
+        pertAmp : number,
+        baseTemp :number) : void {
         this.galaxy.coreRad = coreRad
         this.galaxy.rad = rad
         this.galaxy.exInner = innerEx
         this.galaxy.exOuter = outterEx
         this.galaxy.angleOffset = angularOffset
         this.galaxy.pertN = pertN
+        this.galaxy.pertAmp = pertAmp
+        this.galaxy.baseTemp = baseTemp
         this.renderUpdateHint |= RenderUpdateHint.DENSITY_WAVES;
     }
 
@@ -251,7 +233,7 @@ export class GalaxyRenderer {
         this.preset.push(new GalaxyParam(13000, 1500, .0004, 1.1, 1.0, 40000, true, 1, 20, 80, 2800 ));
         this.preset.push(new GalaxyParam(13000, 4000, .0004, .85, .95, 40000, true, 1, 20, 80, 4500 ));
     
-        this.galaxy.reset(this.preset[0])
+        this.galaxy.reset(this.preset[0], false)
         this.fov = this.galaxy.rad * 3;
     }
 
@@ -457,27 +439,44 @@ export class GalaxyRenderer {
         vertIdx.push(4294967295); 
     }
     
+    private progressHandler : IProgressHandler | null = null;
+
+    public setProgressListener(handler : IProgressHandler) {
+        this.progressHandler = handler
+    }
+
     private updateStars() : void {
         if (this.vertStars==null)
             throw new Error("GalaxyRenderer.updateStars(): this.vertStars is null!")
 
-//        console.log("updating stars.");
+        console.log("updating stars.");
 
         let vert : VertexStar[] = [];
         let idx : number[] = [];
-    
-        let stars : Star[] = this.galaxy.stars;
-    
-        let a : number = 1;
-        for (let i = 1; i < stars.length; ++i)
+
+        if (this.progressHandler!=null)
+            this.progressHandler.showProgress(true)
+
+        try
         {
-            let col : Color = Helper.colorFromTemperature(stars[i].temp);
-            col.a = a;
-    
-            idx.push(vert.length);
-            vert.push(new VertexStar(stars[i], col));
+            this.galaxy.reset(null, true)
+            let stars : Star[] = this.galaxy.stars;
+        
+            let a : number = 1;
+            for (let i = 1; i < stars.length; ++i)
+            {
+                let col : Color = Helper.colorFromTemperature(stars[i].temp);
+                col.a = a;
+        
+                idx.push(vert.length);
+                vert.push(new VertexStar(stars[i], col));
+            }
         }
-    
+        finally {
+            if (this.progressHandler!=null)
+                this.progressHandler.showProgress(false)
+        }
+
         this.vertStars.createBuffer(vert, idx, this.gl.POINTS);
         this.renderUpdateHint &= ~RenderUpdateHint.STARS;
     }
