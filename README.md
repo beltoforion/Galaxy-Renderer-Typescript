@@ -7,13 +7,13 @@ article at beltoforion.de about simulating a galaxy with the density wave theory
 * https://beltoforion.de/en/spiral_galaxy_renderer [english]
 * https://beltoforion.de/de/rendern_von_spiralgalaxien [german]
 
-A C++ implementation of this code is available here:
-
-* https://github.com/beltoforion/Galaxy-Renderer
-
 An online demo of the typescript version can be viewed here:
 
  [![applet image](https://beltoforion.de/github_images/galaxy-renderer-typescript.jpg)](https://beltoforion.de/en/spiral_galaxy_renderer/spiral-galaxy-renderer.html)
+
+A C++ implementation of this code is available here:
+
+* https://github.com/beltoforion/Galaxy-Renderer
 
 ## Prerequisites:
 
