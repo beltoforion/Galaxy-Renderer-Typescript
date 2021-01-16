@@ -17,9 +17,13 @@ A C++ implementation of this code is available here:
 
 ## Prerequisites:
 
-In order to build this project you need typescript and npm. I did not add the npm dependencies to this archive. The repository was created using Visual Studio Code.
-
-Before building make sure you have the following npm packages installed:
+This program has the following dependencies:
   * webpack
   * webpack-cli
   * gl-matrix
+
+To install the dependencies go to the project folder and type:
+
+```npm install```
+
+You should then be able to compile the project with Visual Studio Code.
