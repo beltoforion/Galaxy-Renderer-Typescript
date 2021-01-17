@@ -3,7 +3,7 @@ import { Galaxy } from "./Galaxy";
 
 
 
-export class UiController implements IProgressHandler{
+export class UiController {
     private renderer : GalaxyRenderer
 
     private rad : number = 0
@@ -19,18 +19,8 @@ export class UiController implements IProgressHandler{
 
     private renderState : boolean[] = []
 
-    private progress : HTMLProgressElement | null;
-
     constructor(renderer : GalaxyRenderer) {
         this.renderer = renderer
-        this.renderer.setProgressListener(this)
-
-        document.addEventListener('keydown', (event) => this.onKeydown(event));
-
-// progress display does not work
-//        this.progress = document.getElementById("idProgress") as HTMLProgressElement;
-        this.progress = null
-        this.showProgress(false)
 
         this.updateFromGalaxy()
     }
@@ -47,33 +37,6 @@ export class UiController implements IProgressHandler{
 
     private get galaxy() : Galaxy {
         return this.renderer.galaxy
-    }
-
-    public showProgress(show : boolean) : void {
-        if (this.progress==null)
-            return;
-
-        if (show) {
-            console.log("showing progress")
-            this.progress.style.display = "block"
-        } else {
-            console.log("hiding progress")
-            this.progress.style.display = "none"
-        }
-    }
-
-    private onKeydown(event : KeyboardEvent) {
-        /*        
-                const keyName = event.key;
-                console.log("Key " + keyName + " pressed")
-        
-                switch(keyName)
-                {
-                    case 'x':
-        
-                        break;    
-                }
-        */        
     }
 
     // Update Ui Controller from galaxy
@@ -120,7 +83,6 @@ export class UiController implements IProgressHandler{
         }
         finally
         {
-            this.showProgress(true)
             this._isEditMode = false
             this.renderer.renderUpdateHint |= RenderUpdateHint.STARS
         }

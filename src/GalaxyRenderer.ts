@@ -439,12 +439,6 @@ export class GalaxyRenderer {
         vertIdx.push(4294967295); 
     }
     
-    private progressHandler : IProgressHandler | null = null;
-
-    public setProgressListener(handler : IProgressHandler) {
-        this.progressHandler = handler
-    }
-
     private updateStars() : void {
         if (this.vertStars==null)
             throw new Error("GalaxyRenderer.updateStars(): this.vertStars is null!")
@@ -454,27 +448,17 @@ export class GalaxyRenderer {
         let vert : VertexStar[] = [];
         let idx : number[] = [];
 
-        if (this.progressHandler!=null)
-            this.progressHandler.showProgress(true)
-
-        try
+        this.galaxy.reset(null, true)
+        let stars : Star[] = this.galaxy.stars;
+    
+        let a : number = 1;
+        for (let i = 1; i < stars.length; ++i)
         {
-            this.galaxy.reset(null, true)
-            let stars : Star[] = this.galaxy.stars;
-        
-            let a : number = 1;
-            for (let i = 1; i < stars.length; ++i)
-            {
-                let col : Color = Helper.colorFromTemperature(stars[i].temp);
-                col.a = a;
-        
-                idx.push(vert.length);
-                vert.push(new VertexStar(stars[i], col));
-            }
-        }
-        finally {
-            if (this.progressHandler!=null)
-                this.progressHandler.showProgress(false)
+            let col : Color = Helper.colorFromTemperature(stars[i].temp);
+            col.a = a;
+    
+            idx.push(vert.length);
+            vert.push(new VertexStar(stars[i], col));
         }
 
         this.vertStars.createBuffer(vert, idx, this.gl.POINTS);
