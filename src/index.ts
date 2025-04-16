@@ -17,7 +17,9 @@ try
     uiController = new UiController(galaxy);
 
 }
-catch(Error)
+catch(error)
 {
-  alert(Error.message);
+    if (error instanceof Error) {
+        alert(error.message);
+    }
 }

@@ -549,9 +549,11 @@ export class GalaxyRenderer {
             this.update();
             this.render();
         }
-        catch(Error)
+        catch(error)
         {
-            console.log(Error.message);
+            if (error instanceof Error) {
+                console.log(error.message);
+            }
             error = true;
         }
         finally
